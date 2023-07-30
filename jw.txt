@@ -1,0 +1,81 @@
+from collections import defaultdict
+jug1, jug2, aim = 4, 3, 2
+visited = defaultdict(lambda: False)
+
+def waterJugSolver(amt1, amt2):
+	if (amt1 == aim and amt2 == 0) or (amt2 == aim and amt1 == 0):
+		print(amt1, amt2)
+		return True
+	
+	if visited[(amt1, amt2)] == False:
+		print(amt1, amt2)
+		visited[(amt1, amt2)] = True
+	
+		return (waterJugSolver(0, amt2) or
+				waterJugSolver(amt1, 0) or
+				waterJugSolver(jug1, amt2) or
+				waterJugSolver(amt1, jug2) or
+				waterJugSolver(amt1 + min(amt2, (jug1-amt1)),
+				amt2 - min(amt2, (jug1-amt1))) or
+				waterJugSolver(amt1 - min(amt1, (jug2-amt2)),
+				amt2 + min(amt1, (jug2-amt2))))
+	else:
+		return False
+
+print("Steps: ")
+waterJugSolver(0, 0)
+
+
+
+graph = {
+    '5' : ['3','7'],
+    '3' : ['2','4'],
+    '7' : ['8'],
+    '2' : [],
+    '4' : ['8'],
+    '8' : []
+}
+
+visited =[]
+queue = []
+
+def bfs(visited, graph, node):
+    visited.append(node)
+    queue.append(node)
+
+    while queue:
+        m = queue.pop(0)
+        print(m, end =" ")
+        
+        for neighbour in graph[m]:
+            if neighbour not in visited:
+                visited.append(neighbour)
+                queue.append(neighbour)
+
+# main code
+print("BFS traversal is : ")
+bfs(visited, graph, '5') #fn call
+
+graph = {
+    '5' : ['3','7'],
+    '3' : ['2','4'],
+    '7' : ['8'],
+    '2' : [],
+    '4' : ['8'],
+    '8' : []
+}
+
+visited = set() #set to keep track of visited nodes
+
+def dfs(visited, graph, node):
+    if node not in visited:
+        print(node, end=" ")
+        visited.add(node)
+        for neighbour in graph[node]:
+            dfs(visited, graph, neighbour) #recursion
+
+
+# main code
+print("DFS traversal is : ")
+dfs(visited, graph, '5') #fn call
+
